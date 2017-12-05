@@ -10,9 +10,16 @@ var users = require('./routes/users');
 
 var app = express();
 
-// simple in-memory usage store
-var usages = [];
-app.usages = usages;
+// use MongoDB for data store
+app.mongoClient = require('mongodb').MongoClient;
+app.uri = "uri connection string goes here";
+app.mongoClient.connect(app.uri, function(err, db) {
+  if (err) {
+    console.log("Unable to connect to database");
+  } else {
+    app.db = db;
+  }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
